@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_14ibidk" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <decision id="Decision_15osbvl" name="Accept New Supplier">
+    <informationRequirement id="InformationRequirement_0h8fnxs">
+      <requiredInput href="#InputData_04o8byh" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_08ue6n0">
+      <requiredInput href="#InputData_0gjveq3" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1kdqj5u">
+      <requiredInput href="#InputData_1ycfwxg" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1ba7wtv" hitPolicy="FIRST">
+      <input id="Input_1" label="Visit" biodi:width="192">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>visit</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0c9mqou" label="Self Assessment">
+        <inputExpression id="LiteralExpression_1ijz3cf" typeRef="number">
+          <text>selfAssessmentScore</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0tqlesw" label="Proof of Work">
+        <inputExpression id="LiteralExpression_0oejg1z" typeRef="boolean">
+          <text>proofWork</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Accept Supplier" name="acceptSupplier" typeRef="boolean" biodi:width="192" />
+      <rule id="DecisionRule_1g49jme">
+        <description>error in the review of self assessment form</description>
+        <inputEntry id="UnaryTests_11e8k7f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p805ga">
+          <text>none in selfAssessmentScore</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09rcc6m">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1phujh6">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wf4m54">
+        <description>failed in self-assessment</description>
+        <inputEntry id="UnaryTests_1pe47b5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i5ztm0">
+          <text>-1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c8a87t">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0y65q6o">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1wlrgdu">
+        <inputEntry id="UnaryTests_0cq63os">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_191xlya">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s40tk2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0fj80tl">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ylq1aw">
+        <inputEntry id="UnaryTests_0ih7s2i">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1w1sq29">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17qi05l">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0t6ih9t">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0xz4vsn">
+        <inputEntry id="UnaryTests_0fyoakf">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0eegxtw">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07kw5ay">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0d5il5n">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ctcetf">
+        <description>already assessed supplier</description>
+        <inputEntry id="UnaryTests_1ij3ms2">
+          <text>none in visit</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q64lve">
+          <text>none in selfAssessmentScore</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hhoty3">
+          <text>none in proofWork</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pb2hg7">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0aq8nnv">
+        <inputEntry id="UnaryTests_1yf4l1s">
+          <text>none in visit</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12jwa32">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tiitm3">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ktez6t">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03ndv4j">
+        <inputEntry id="UnaryTests_0f9zefx">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_126now6">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bx96f3">
+          <text>none in proofWork</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0820qco">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1c3t6f2">
+        <description>required only self-assessment and passed</description>
+        <inputEntry id="UnaryTests_1e0ndlg">
+          <text>none in visit</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nhy3oa">
+          <text>1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_160c18k">
+          <text>none in proofWork</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0r50s8y">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_04o8byh" name="Self Assessment" />
+  <inputData id="InputData_0gjveq3" name="Proof of work" />
+  <inputData id="InputData_1ycfwxg" name="Visit on premise" />
+  <textAnnotation id="TextAnnotation_1q6j5w2">
+    <text>check what happens on error: does it return None?
+update the rule in the Decision Table if needed</text>
+  </textAnnotation>
+  <association id="Association_1ug4pyn">
+    <sourceRef href="#TextAnnotation_1q6j5w2" />
+    <targetRef href="#InputData_1ycfwxg" />
+  </association>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_15osbvl">
+        <dc:Bounds height="80" width="180" x="370" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1svs96o" dmnElementRef="InputData_04o8byh">
+        <dc:Bounds height="45" width="125" x="397" y="337" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0rjkg3q" dmnElementRef="InformationRequirement_0h8fnxs">
+        <di:waypoint x="460" y="337" />
+        <di:waypoint x="460" y="200" />
+        <di:waypoint x="460" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_08uyns9" dmnElementRef="InputData_0gjveq3">
+        <dc:Bounds height="45" width="125" x="637" y="337" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_11zodl3" dmnElementRef="InformationRequirement_08ue6n0">
+        <di:waypoint x="700" y="337" />
+        <di:waypoint x="505" y="200" />
+        <di:waypoint x="505" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0afz4qb" dmnElementRef="InputData_1ycfwxg">
+        <dc:Bounds height="45" width="125" x="157" y="337" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0v42tiw" dmnElementRef="InformationRequirement_1kdqj5u">
+        <di:waypoint x="220" y="337" />
+        <di:waypoint x="415" y="200" />
+        <di:waypoint x="415" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_07armpz" dmnElementRef="TextAnnotation_1q6j5w2">
+        <dc:Bounds height="117" width="100" x="282" y="413" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1gtbpyy" dmnElementRef="Association_1ug4pyn">
+        <di:waypoint x="284" y="413" />
+        <di:waypoint x="246" y="382" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

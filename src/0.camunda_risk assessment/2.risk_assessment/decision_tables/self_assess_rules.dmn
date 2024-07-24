@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_0kuqmt2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <decision id="Decision_0to7149" name="Assess Risk">
+    <informationRequirement id="InformationRequirement_1ujhb39">
+      <requiredDecision href="#Decision_1b625xk" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0ch3yfr">
+      <requiredDecision href="#Decision_0u3pzex" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0prm2eq">
+      <requiredDecision href="#Decision_1bgmff4" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_02sh8kw" hitPolicy="FIRST">
+      <input id="Input_1" label="General Criteria">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0cg8nuy" label="Project Management">
+        <inputExpression id="LiteralExpression_18hwkq4" typeRef="number">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1y2tfii" label="Logistics">
+        <inputExpression id="LiteralExpression_0a1aju0" typeRef="number">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Risk" typeRef="number" />
+      <output id="OutputClause_0ymm3yg" label="RiskStr" typeRef="string" />
+      <rule id="DecisionRule_0k1rajc">
+        <inputEntry id="UnaryTests_07n4krm">
+          <text>=1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qnn9jg">
+          <text>=1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_197l8ut">
+          <text>=1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dg8vug">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y4en69">
+          <text>"LowRisk"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rgxioc">
+        <inputEntry id="UnaryTests_040bfk8">
+          <text>&lt;1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1alkigc">
+          <text>=0</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0va62oc">
+          <text>&lt;1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1li9puh">
+          <text>-1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17ubrdu">
+          <text>"Indeterminate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03wfi2p">
+        <inputEntry id="UnaryTests_1wic5v1">
+          <text>&lt;1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j9eb99">
+          <text>&lt;0</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lp9zgr">
+          <text>&lt;1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mb6mz8">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1vgt6tx">
+          <text>"HighRisk"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_13ue475" name="Processing Capacity" />
+  <inputData id="InputData_0tnpdx8" name="Communication with Customer" />
+  <inputData id="InputData_0vzxrxr" name="Project Scheduling" />
+  <inputData id="InputData_0g91lnl" name="Estimated workload" />
+  <inputData id="InputData_1dib6hi" name="Production Management Digitization" />
+  <inputData id="InputData_0e90lz6" name="Reactivity and Flexibility" />
+  <inputData id="InputData_04h7qn4" name="Dependence on Customer" />
+  <inputData id="InputData_077a08v" name="Years in the Industry Sector" />
+  <decision id="Decision_0u3pzex" name="Project Management">
+    <informationRequirement id="InformationRequirement_01fo6s5">
+      <requiredInput href="#InputData_13ue475" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_05j587a">
+      <requiredInput href="#InputData_0tnpdx8" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_17r0vca">
+      <requiredInput href="#InputData_0vzxrxr" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1ya3ovs" hitPolicy="FIRST">
+      <input id="InputClause_1svjwqm" label="Processing Capacity">
+        <inputExpression id="LiteralExpression_0sa7o5o" typeRef="string">
+          <text>capacity</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_06j4f9a">
+          <text>"Low","High","Medium"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1sly646" label="Communication with Customer" biodi:width="188">
+        <inputExpression id="LiteralExpression_098s8em" typeRef="string">
+          <text>comCustomer</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_10es9eg">
+          <text>"Good","Bad"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0cetxhx" label="Project Scheduling" biodi:width="192">
+        <inputExpression id="LiteralExpression_12g1e8d" typeRef="string">
+          <text>scheduling</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1n8svap">
+          <text>"Good","Bad"</text>
+        </inputValues>
+      </input>
+      <output id="OutputClause_10troel" label="Score" name="pm_score" typeRef="number" />
+      <rule id="DecisionRule_0c294x8">
+        <description>High Risk</description>
+        <inputEntry id="UnaryTests_1f7xwu2">
+          <text>"Low" in capacity</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0d90e3z">
+          <text>"Good","Bad" in comCustomer</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06kv074">
+          <text>"Good","Bad" in scheduling</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0uwde2x">
+          <text>1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0svdc2v">
+        <description>Indeterminate</description>
+        <inputEntry id="UnaryTests_1p5hs6h">
+          <text>"Medium" in capacity</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01lxnw4">
+          <text>"Good" in commCustomer</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bp424i">
+          <text>"Good" in scheduling</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ln1p5y">
+          <text>-1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05vygug">
+        <description>Low Risk</description>
+        <inputEntry id="UnaryTests_0ocw6ri">
+          <text>"High" in capacity</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bupn09">
+          <text>"Good" in commCustomer</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_101d6mk">
+          <text>"Good","Bad" in scheduling</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06di6xo">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0b5pe71">
+        <inputEntry id="UnaryTests_11717as">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i5oxj7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15mbfuv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lmv691">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_1bgmff4" name="Logistics">
+    <informationRequirement id="InformationRequirement_02p37y1">
+      <requiredInput href="#InputData_0g91lnl" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1ck0f18">
+      <requiredInput href="#InputData_0e90lz6" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1t19eh2">
+      <requiredInput href="#InputData_1dib6hi" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_048zlql" hitPolicy="FIRST">
+      <input id="InputClause_0cfrtge" label="Production Digitization">
+        <inputExpression id="LiteralExpression_17p18z1" typeRef="string">
+          <text>digitization</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0yeka6s">
+          <text>"High","Low"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1tpajdk" label="Workload">
+        <inputExpression id="LiteralExpression_0uu7mak" typeRef="string">
+          <text>workload</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0h3c43a">
+          <text>"High","Low"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0fml58i" label="Flexibility">
+        <inputExpression id="LiteralExpression_1cqd0f8" typeRef="string">
+          <text>flexibility</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1pku100">
+          <text>"High","Low"</text>
+        </inputValues>
+      </input>
+      <output id="OutputClause_1kokosz" label="Score" typeRef="number" />
+      <rule id="DecisionRule_1u9uje5">
+        <description>Low Risk</description>
+        <inputEntry id="UnaryTests_1oedms0">
+          <text>"High" in digitization</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ct6ycv">
+          <text>"Low" in workload</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mkfvop">
+          <text>"High","Low" in flexibility</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kp77eq">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_159g271">
+        <description>High Risk</description>
+        <inputEntry id="UnaryTests_0t11lls">
+          <text>"Low" in digitization</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rb271l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1df3282">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nxrwh0">
+          <text>1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1jya0z8">
+        <inputEntry id="UnaryTests_02f53c0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yk3xvs">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07lhxsr">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1her8v5">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_1b625xk" name="General Criteria">
+    <informationRequirement id="InformationRequirement_1cufw6o">
+      <requiredInput href="#InputData_077a08v" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0qytaz2">
+      <requiredInput href="#InputData_04h7qn4" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_16aqa33" hitPolicy="FIRST">
+      <input id="InputClause_145pcig" label="Dependence on Customer">
+        <inputExpression id="LiteralExpression_1ozqemi" typeRef="string">
+          <text>customerDependence</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_18bcj20">
+          <text>"High","Low"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_08nnw83" label="Years in Industry">
+        <inputExpression id="LiteralExpression_1soyhwp" typeRef="number">
+          <text>indYears</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1gxcigd" label="Score" typeRef="number" />
+      <rule id="DecisionRule_0rv1l77">
+        <description>Low Risk</description>
+        <inputEntry id="UnaryTests_06q5368">
+          <text>"Low" in customerDependence</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_005ju64">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jvkwf1">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1affkmu">
+        <description>High Risk</description>
+        <inputEntry id="UnaryTests_123lwpm">
+          <text>"High" in customerDependence</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jcp4e2">
+          <text>&lt;5</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cdsrb9">
+          <text>1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sw1weg">
+        <description>Indeterminate</description>
+        <inputEntry id="UnaryTests_15upa3g">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_133kn1e">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1biii5v">
+          <text>-1</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0to7149">
+        <dc:Bounds height="80" width="180" x="590" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_01h0skl" dmnElementRef="InformationRequirement_1ujhb39">
+        <di:waypoint x="350" y="210" />
+        <di:waypoint x="635" y="180" />
+        <di:waypoint x="635" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1lyigla" dmnElementRef="InformationRequirement_0ch3yfr">
+        <di:waypoint x="680" y="270" />
+        <di:waypoint x="680" y="180" />
+        <di:waypoint x="680" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0ssmu7x" dmnElementRef="InformationRequirement_0prm2eq">
+        <di:waypoint x="1130" y="220" />
+        <di:waypoint x="725" y="180" />
+        <di:waypoint x="725" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_14d0j23" dmnElementRef="InputData_13ue475">
+        <dc:Bounds height="45" width="125" x="498" y="388" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1w7khsh" dmnElementRef="InputData_0tnpdx8">
+        <dc:Bounds height="45" width="125" x="618" y="448" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1i0ko91" dmnElementRef="InputData_0vzxrxr">
+        <dc:Bounds height="45" width="125" x="718" y="518" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0n01mt4" dmnElementRef="InformationRequirement_01fo6s5">
+        <di:waypoint x="561" y="388" />
+        <di:waypoint x="635" y="370" />
+        <di:waypoint x="635" y="350" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_18qg8qj" dmnElementRef="InformationRequirement_05j587a">
+        <di:waypoint x="681" y="448" />
+        <di:waypoint x="680" y="370" />
+        <di:waypoint x="680" y="350" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0pvp67s" dmnElementRef="InformationRequirement_17r0vca">
+        <di:waypoint x="781" y="518" />
+        <di:waypoint x="725" y="370" />
+        <di:waypoint x="725" y="350" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1xf31rc" dmnElementRef="InputData_0g91lnl">
+        <dc:Bounds height="45" width="125" x="1022" y="388" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1tefz4u" dmnElementRef="InformationRequirement_02p37y1">
+        <di:waypoint x="1085" y="388" />
+        <di:waypoint x="1130" y="320" />
+        <di:waypoint x="1130" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0hfyml1" dmnElementRef="InputData_1dib6hi">
+        <dc:Bounds height="45" width="125" x="967" y="327" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0ovspsg" dmnElementRef="InformationRequirement_1t19eh2">
+        <di:waypoint x="1030" y="327" />
+        <di:waypoint x="1085" y="320" />
+        <di:waypoint x="1085" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0ys6r44" dmnElementRef="InputData_0e90lz6">
+        <dc:Bounds height="45" width="125" x="1137" y="347" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_00qkfja" dmnElementRef="InformationRequirement_1ck0f18">
+        <di:waypoint x="1200" y="347" />
+        <di:waypoint x="1175" y="320" />
+        <di:waypoint x="1175" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0p2o7cl" dmnElementRef="InputData_04h7qn4">
+        <dc:Bounds height="45" width="125" x="158" y="318" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1x2igwb" dmnElementRef="InputData_077a08v">
+        <dc:Bounds height="45" width="125" x="317" y="347" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_16uzpb3" dmnElementRef="InformationRequirement_1cufw6o">
+        <di:waypoint x="380" y="347" />
+        <di:waypoint x="380" y="310" />
+        <di:waypoint x="380" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0lqo2a3" dmnElementRef="InformationRequirement_0qytaz2">
+        <di:waypoint x="221" y="318" />
+        <di:waypoint x="320" y="310" />
+        <di:waypoint x="320" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0qrps74" dmnElementRef="Decision_0u3pzex">
+        <dc:Bounds height="80" width="180" x="590" y="270" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1nrb1iz" dmnElementRef="Decision_1bgmff4">
+        <dc:Bounds height="80" width="180" x="1040" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0a94eia" dmnElementRef="Decision_1b625xk">
+        <dc:Bounds height="80" width="180" x="260" y="210" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

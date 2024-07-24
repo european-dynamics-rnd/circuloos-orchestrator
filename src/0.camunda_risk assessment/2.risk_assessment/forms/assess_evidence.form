@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "action": "submit",
+      "label": "sample accepted",
+      "type": "button",
+      "layout": {
+        "row": "Row_0sys8aq",
+        "columns": null
+      },
+      "id": "Field_13rwszq"
+    },
+    {
+      "action": "submit",
+      "label": "sample rejected",
+      "type": "button",
+      "layout": {
+        "row": "Row_1jikant",
+        "columns": null
+      },
+      "id": "Field_0hgz8z8"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1v32ef4",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16
+}

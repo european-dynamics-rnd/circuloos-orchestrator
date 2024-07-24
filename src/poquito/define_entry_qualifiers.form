@@ -1,0 +1,152 @@
+{
+  "components": [
+    {
+      "text": "## select sourcing strategy",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_1o3phi7",
+        "columns": null
+      },
+      "id": "Field_19anibm"
+    },
+    {
+      "label": "trusted only",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1ehyl0o",
+        "columns": null
+      },
+      "id": "Field_0zo4yxy",
+      "key": "trusted"
+    },
+    {
+      "text": "### or:",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_09ry0kd",
+        "columns": null
+      },
+      "id": "Field_0wn0cxp"
+    },
+    {
+      "label": "from theRAMP Community",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_14p59t9",
+        "columns": null
+      },
+      "id": "Field_0mwnmn9",
+      "key": "rampGeneral"
+    },
+    {
+      "label": "make new Open Call",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0g2kc23",
+        "columns": null
+      },
+      "id": "Field_022cppq",
+      "key": "openCall"
+    },
+    {
+      "components": [
+        {
+          "label": "max distance",
+          "type": "number",
+          "layout": {
+            "row": "Row_1yddb7u",
+            "columns": null
+          },
+          "id": "Field_0qdeygt",
+          "key": "maxDistance"
+        },
+        {
+          "subtype": "date",
+          "dateLabel": "Delivery Date",
+          "label": "Date time",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_1yddb7u",
+            "columns": null
+          },
+          "id": "Field_1lis01g",
+          "key": "DeliveryDate"
+        },
+        {
+          "label": "Source of Material",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1yddb7u",
+            "columns": null
+          },
+          "id": "Field_1l850p0",
+          "key": "SourceMaterial"
+        },
+        {
+          "label": "Price Limit",
+          "type": "number",
+          "layout": {
+            "row": "Row_1yddb7u",
+            "columns": null
+          },
+          "id": "Field_1evn49f",
+          "key": "PriceLimit"
+        },
+        {
+          "label": "min reputation",
+          "type": "number",
+          "layout": {
+            "row": "Row_1yddb7u",
+            "columns": null
+          },
+          "id": "Field_00vsq6c",
+          "key": "minReputation"
+        }
+      ],
+      "showOutline": true,
+      "label": "Entry Qualifiers",
+      "type": "group",
+      "layout": {
+        "row": "Row_1kww9eb",
+        "columns": null
+      },
+      "id": "Field_0i8umdc"
+    },
+    {
+      "label": "Table",
+      "type": "table",
+      "layout": {
+        "row": "Row_0tmelxo",
+        "columns": null
+      },
+      "rowCount": 10,
+      "columns": [
+        {
+          "label": "ID",
+          "key": "id"
+        },
+        {
+          "label": "Name",
+          "key": "name"
+        },
+        {
+          "label": "Date",
+          "key": "date"
+        }
+      ],
+      "id": "Field_16javs2",
+      "dataSource": "=Field_16javs2"
+    }
+  ],
+  "type": "default",
+  "id": "DefineEntryQualifiers",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.25.0"
+  },
+  "schemaVersion": 16
+}

@@ -1,0 +1,60 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "label": "Qualify this supplier",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_0veimi0",
+            "columns": 3
+          },
+          "id": "Field_0n0sa8i",
+          "key": "qualifySupplier"
+        }
+      ],
+      "showOutline": true,
+      "label": "Supplier Description",
+      "type": "group",
+      "layout": {
+        "row": "Row_0l9yspy",
+        "columns": null
+      },
+      "id": "Field_0go6g4p"
+    },
+    {
+      "label": "Table",
+      "type": "table",
+      "layout": {
+        "row": "Row_1kewvd9",
+        "columns": null
+      },
+      "rowCount": 10,
+      "columns": [
+        {
+          "label": "ID",
+          "key": "id"
+        },
+        {
+          "label": "Name",
+          "key": "name"
+        },
+        {
+          "label": "Date",
+          "key": "date"
+        }
+      ],
+      "id": "Field_0hi1lhk",
+      "dataSource": "=suppliersCollection[0]"
+    }
+  ],
+  "type": "default",
+  "id": "QualifySupplier",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.25.0"
+  },
+  "schemaVersion": 16
+}

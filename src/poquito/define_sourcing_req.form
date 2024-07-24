@@ -1,0 +1,53 @@
+{
+  "components": [
+    {
+      "text": "# Define Sourcing Requirements",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0q3mihd",
+        "columns": null
+      },
+      "id": "Field_0foabcw"
+    },
+    {
+      "label": "Material",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1lnz8z1",
+        "columns": null
+      },
+      "id": "Field_1jfc354",
+      "key": "Material"
+    },
+    {
+      "label": "Color",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1lnz8z1",
+        "columns": null
+      },
+      "id": "Field_106ufr2",
+      "key": "Color"
+    },
+    {
+      "label": "Normative (compliance to standards)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0p4yxdt",
+        "columns": null
+      },
+      "id": "Field_1rw6tuh",
+      "key": "Normative"
+    }
+  ],
+  "type": "default",
+  "id": "DefineSourcingRequirements",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.25.0"
+  },
+  "schemaVersion": 16
+}

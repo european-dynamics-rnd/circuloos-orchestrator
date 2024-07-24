@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "label": "Risk Info",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0bzvvc5",
+        "columns": null
+      },
+      "id": "Field_0f8kubd",
+      "key": "textarea_t8p6op",
+      "defaultValue": "info submitted by supplier"
+    },
+    {
+      "action": "submit",
+      "label": "Onboard  Vendor",
+      "type": "button",
+      "layout": {
+        "row": "Row_13n36w7",
+        "columns": 4
+      },
+      "id": "Field_098zea5"
+    },
+    {
+      "action": "submit",
+      "label": "Reject Vendor",
+      "type": "button",
+      "layout": {
+        "row": "Row_13n36w7",
+        "columns": 3
+      },
+      "id": "Field_1fmjt96"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1h2oyzk",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16
+}

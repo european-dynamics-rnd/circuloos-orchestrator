@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "label": "Result of visit",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0tgbnqm",
+        "columns": null
+      },
+      "id": "Field_0tbuqp3",
+      "key": "textarea_siti0d"
+    },
+    {
+      "action": "submit",
+      "label": "accept supplier",
+      "type": "button",
+      "layout": {
+        "row": "Row_0m6lnmm",
+        "columns": null
+      },
+      "id": "Field_04j5z62"
+    },
+    {
+      "action": "submit",
+      "label": "reject supplier",
+      "type": "button",
+      "layout": {
+        "row": "Row_15tey8u",
+        "columns": null
+      },
+      "id": "Field_1696ajh"
+    }
+  ],
+  "type": "default",
+  "id": "Form_02d63rp",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16
+}

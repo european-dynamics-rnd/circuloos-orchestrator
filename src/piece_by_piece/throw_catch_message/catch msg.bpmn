@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1qxqsw5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="Process_0gg9wh6" name="catch_throw_events" isExecutable="true" camunda:historyTimeToLive="911">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0ighubg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0ighubg" sourceRef="StartEvent_1" targetRef="throw_msg" />
+    <bpmn:sequenceFlow id="Flow_0oogrjn" sourceRef="throw_msg" targetRef="Activity_0jhkf8s" />
+    <bpmn:sequenceFlow id="Flow_1u2tdy2" sourceRef="Activity_0jhkf8s" targetRef="catch_msg" />
+    <bpmn:endEvent id="Event_0jfupn5">
+      <bpmn:incoming>Flow_0b7znzg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="throw_msg" name="throw msg" camunda:type="external" camunda:topic="service_me">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="service_me" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ighubg</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oogrjn</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="catch_msg" name="catch msg" messageRef="Message_0rq8pb8">
+      <bpmn:incoming>Flow_1u2tdy2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1u2u1pc</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:userTask id="Activity_0jhkf8s" name="see msg">
+      <bpmn:incoming>Flow_0oogrjn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1u2tdy2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1u2u1pc" sourceRef="catch_msg" targetRef="Activity_0bn572n" />
+    <bpmn:sequenceFlow id="Flow_0b7znzg" sourceRef="Activity_0bn572n" targetRef="Event_0jfupn5" />
+    <bpmn:userTask id="Activity_0bn572n" name="before end">
+      <bpmn:incoming>Flow_1u2u1pc</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b7znzg</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_3ad869e" name="another_topic">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=another_topic" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_0rq8pb8" name="CANCEL_MESSAGE" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0gg9wh6">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jfupn5_di" bpmnElement="Event_0jfupn5">
+        <dc:Bounds x="972" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ed2w2r_di" bpmnElement="throw_msg">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o026ki_di" bpmnElement="catch_msg">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lmfysw_di" bpmnElement="Activity_0jhkf8s">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ld1kt5_di" bpmnElement="Activity_0bn572n">
+        <dc:Bounds x="760" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0ighubg_di" bpmnElement="Flow_0ighubg">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oogrjn_di" bpmnElement="Flow_0oogrjn">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1u2tdy2_di" bpmnElement="Flow_1u2tdy2">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1u2u1pc_di" bpmnElement="Flow_1u2u1pc">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="760" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b7znzg_di" bpmnElement="Flow_0b7znzg">
+        <di:waypoint x="860" y="117" />
+        <di:waypoint x="972" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

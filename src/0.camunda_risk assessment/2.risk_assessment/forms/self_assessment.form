@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "Self assessment entry data",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0bwbp5g",
+        "columns": null
+      },
+      "id": "Field_139wf2w",
+      "key": "textarea_u38u1"
+    }
+  ],
+  "type": "default",
+  "id": "Form_16d6a85",
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16
+}
