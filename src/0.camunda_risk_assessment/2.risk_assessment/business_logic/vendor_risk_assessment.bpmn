@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_09p6z4s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
-  <bpmn:process id="Process_07x0bi1" isExecutable="true">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_09p6z4s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:process id="RiskAssessmentPhases" name="Risk Assessment Phases" isExecutable="true" camunda:historyTimeToLive="111">
     <bpmn:startEvent id="StartEvent_1" name="Make a decision for this Supplier">
       <bpmn:outgoing>Flow_0xgzij4</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_1rrwh9l" name="Fill Self-Assessment">
+    <bpmn:userTask id="Activity_1rrwh9l" name="Fill Self-Assessment" camunda:formRef="fill_self_assessment" camunda:formRefBinding="latest">
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="Form_16d6a85" />
       </bpmn:extensionElements>
@@ -24,7 +24,7 @@
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0osuwp3" sourceRef="Activity_1rrwh9l" targetRef="Activity_137dxqk" />
     <bpmn:sequenceFlow id="Flow_0ycput8" sourceRef="Gateway_0vrs5y6" targetRef="Activity_1rrwh9l">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(selfAssessmentNeeded = true)</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(selfAssessmentNeeded)</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:inclusiveGateway id="Gateway_0vrs5y6">
       <bpmn:incoming>Flow_1c3qf7e</bpmn:incoming>
@@ -33,27 +33,27 @@
       <bpmn:outgoing>Flow_1iq3zw9</bpmn:outgoing>
     </bpmn:inclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0ozrv8v" sourceRef="Gateway_0vrs5y6" targetRef="Activity_0bw2doj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(evidenceNeeded = true)</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(evidenceNeeded)</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1iq3zw9" sourceRef="Gateway_0vrs5y6" targetRef="Activity_194exqt">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(visitNeeded = true)</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=(visitNeeded)</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1c3qf7e" sourceRef="Activity_0mbf2ii" targetRef="Gateway_0vrs5y6" />
-    <bpmn:userTask id="Activity_0mbf2ii" name="Describe risk assessment requirements">
+    <bpmn:userTask id="Activity_0mbf2ii" name="Describe risk assessment requirements" camunda:formRef="risk_assessment_requirements" camunda:formRefBinding="latest">
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="Form_0mi1x4d" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0xgzij4</bpmn:incoming>
       <bpmn:outgoing>Flow_1c3qf7e</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_194exqt" name="Visit on premise">
+    <bpmn:userTask id="Activity_194exqt" name="Visit on premise" camunda:formRef="visit_result" camunda:formRefBinding="latest">
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="Form_02d63rp" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1iq3zw9</bpmn:incoming>
       <bpmn:outgoing>Flow_0b062kb</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0njh0h2" sourceRef="Activity_0bw2doj" targetRef="Activity_0cfysz2" />
+    <bpmn:sequenceFlow id="Flow_0njh0h2" sourceRef="Activity_0bw2doj" targetRef="wait_for_sample" />
     <bpmn:userTask id="Activity_0mrtgq5" name="Evaluate sample">
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="Form_1v32ef4" />
@@ -91,12 +91,12 @@
     </bpmn:inclusiveGateway>
     <bpmn:sequenceFlow id="Flow_188wqbv" sourceRef="Gateway_0tcts7d" targetRef="Activity_13tjqf2" />
     <bpmn:sequenceFlow id="Flow_0g8ivac" sourceRef="Activity_0mrtgq5" targetRef="Gateway_0tcts7d" />
-    <bpmn:sequenceFlow id="Flow_1jwh0m4" sourceRef="Activity_0cfysz2" targetRef="Activity_0mrtgq5" />
-    <bpmn:receiveTask id="Activity_0cfysz2" name="Wait for sample" messageRef="Message_2l7kusi">
+    <bpmn:sequenceFlow id="Flow_1jwh0m4" sourceRef="wait_for_sample" targetRef="Activity_0mrtgq5" />
+    <bpmn:receiveTask id="wait_for_sample" name="Wait for sample" messageRef="Message_2l7kusi">
       <bpmn:incoming>Flow_0njh0h2</bpmn:incoming>
       <bpmn:outgoing>Flow_1jwh0m4</bpmn:outgoing>
     </bpmn:receiveTask>
-    <bpmn:boundaryEvent id="wait_2_Days" name="wait 2 Days" cancelActivity="false" attachedToRef="Activity_0cfysz2">
+    <bpmn:boundaryEvent id="wait_2_Days" name="wait 2 Days" cancelActivity="false" attachedToRef="wait_for_sample">
       <bpmn:outgoing>Flow_1pvpef2</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0ywdtmp">
         <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R3/PT10S</bpmn:timeCycle>
@@ -135,12 +135,16 @@
     <bpmn:textAnnotation id="TextAnnotation_0v33qm8">
       <bpmn:text>pattern by: https://www.youtube.com/watch?v=yAvm_re5YGA&amp;list=PLJG25HlmvsOU3BRisp_oocXxQC0avO-Ov&amp;index=3</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1i4gik6" associationDirection="None" sourceRef="Activity_0cfysz2" targetRef="TextAnnotation_0v33qm8" />
+    <bpmn:association id="Association_1i4gik6" associationDirection="None" sourceRef="wait_for_sample" targetRef="TextAnnotation_0v33qm8" />
+    <bpmn:textAnnotation id="TextAnnotation_1870tgf">
+      <bpmn:text>missing implementation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_05sb3p2" associationDirection="None" sourceRef="Activity_1razahy" targetRef="TextAnnotation_1870tgf" />
   </bpmn:process>
   <bpmn:error id="Error_0rllo98" name="noRiskAssessment" errorCode="=999" />
-  <bpmn:message id="Message_2l7kusi" name="Message_2l7kusi" />
+  <bpmn:message id="Message_2l7kusi" name="waiting_for_sample" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_07x0bi1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="RiskAssessmentPhases">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="182" y="269" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -184,7 +188,7 @@
       <bpmndi:BPMNShape id="BPMNShape_02fg2kg" bpmnElement="Gateway_0tcts7d">
         <dc:Bounds x="1045" y="262" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_02akr11_di" bpmnElement="Activity_0cfysz2">
+      <bpmndi:BPMNShape id="Activity_02akr11_di" bpmnElement="wait_for_sample">
         <dc:Bounds x="740" y="400" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0730gtr_di" bpmnElement="wait_6_Days">
@@ -208,6 +212,10 @@
       <bpmndi:BPMNShape id="Activity_1yrdumm_di" bpmnElement="Activity_0bw2doj">
         <dc:Bounds x="600" y="400" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_05sb3p2_di" bpmnElement="Association_05sb3p2">
+        <di:waypoint x="1376" y="247" />
+        <di:waypoint x="1417" y="201" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0v33qm8_di" bpmnElement="TextAnnotation_0v33qm8">
         <dc:Bounds x="500" y="540" width="100" height="142" />
         <bpmndi:BPMNLabel />
@@ -308,6 +316,10 @@
         <di:waypoint x="740" y="464" />
         <di:waypoint x="581" y="540" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1870tgf_di" bpmnElement="TextAnnotation_1870tgf">
+        <dc:Bounds x="1390" y="160" width="100" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

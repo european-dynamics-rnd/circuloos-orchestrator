@@ -1,3 +1,9 @@
+"""
+based on:
+https://github.com/camunda-community-hub/camunda-external-task-client-python3/blob/master/camunda/external_task/external_task_worker.py
+"""
+
+
 from concurrent.futures.thread import ThreadPoolExecutor
 import logging
 
@@ -21,8 +27,6 @@ default_config = {
 
 class CamundaHandlers:
     def __init__(self, helperInstance):
-        self.topics = ["service_me", "another_topic"]    # add the subscription here
-
         self.helper = helperInstance
         ## uncomment the next line if you want the logging text in stdout
         # self.helper.configure_logging()  # can get a bit verbose (tasks continue polling after completing)
@@ -72,17 +76,13 @@ if __name__ == '__main__':
     helper = Helpers()
     handlers = CamundaHandlers(helperInstance=helper)
 
-
-    # how to get this list from the class itself: https://realpython.com/python-callable-instances/#creating-callable-instances-with-__call__-in-python
     handlersList = [handlers.service_me, handlers.another_topic]
+    topics = ["service_me", "another_topic"]
 
-    # https://github.com/camunda-community-hub/camunda-external-task-client-python3/blob/master/camunda/external_task/external_task_worker.py
-
-    # handlersList = handlers.list_methods()[:-1]
     print(f'handlersList: {handlersList}')
-    executor = ThreadPoolExecutor(max_workers=len(handlers.topics))
+    executor = ThreadPoolExecutor(max_workers=len(topics))
 
-    for index, topic in enumerate(handlers.topics):
+    for index, topic in enumerate(topics):
         executor.submit(
             ExternalTaskWorker(worker_id=topic[index], config=default_config).subscribe, topic, handlersList[index]
         )

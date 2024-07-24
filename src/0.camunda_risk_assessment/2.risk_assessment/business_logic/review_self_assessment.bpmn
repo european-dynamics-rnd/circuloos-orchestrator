@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_112kisi" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:error id="Error_0vsb58v" name="Manager unresponsive" errorCode="=1" />
-  <bpmn:collaboration id="Collaboration_1pnlym7">
+  <bpmn:collaboration id="decide_on_self_assessment_input">
     <bpmn:participant id="Participant_161u2dd" name="Vendor Onboarding Service" processRef="Process_08reqk5" />
     <bpmn:participant id="Participant_1ydt0bl" name="RAMP" />
     <bpmn:messageFlow id="Flow_0x62i5f" sourceRef="Activity_1pgkcky" targetRef="Participant_1ydt0bl" />
@@ -202,7 +202,7 @@
   <bpmn:error id="Error_1j39nz3" name="RAMP_GET_200" errorCode="RAMP_GET_200" />
   <bpmn:error id="Error_0zzydlw" name="RAMP_POST_200" errorCode="RAMP_POST_200" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1pnlym7">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="decide_on_self_assessment_input">
       <bpmndi:BPMNShape id="Participant_161u2dd_di" bpmnElement="Participant_161u2dd" isHorizontal="true">
         <dc:Bounds x="160" y="100" width="1860" height="720" />
         <bpmndi:BPMNLabel />

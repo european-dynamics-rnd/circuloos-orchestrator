@@ -34,9 +34,19 @@ class CamundaHandlers:
         ## uncomment the next line if you want the logging text in stdout
         # self.helper.configure_logging()  # can get a bit verbose (tasks continue polling after completing)
 
+
+
+
     def template_handler(self, task: ExternalTask):
         print(f'empty handler executed from this python code!')
         return task.complete()
+
+
+
+
+
+
+
 
 
 class Helpers:
@@ -85,3 +95,4 @@ if __name__ == '__main__':
         executor.submit(
             ExternalTaskWorker(worker_id=topic[index], config=default_config).subscribe, topic, handlersList[index]
         )
+
