@@ -21,31 +21,6 @@
         "columns": null
       },
       "id": "Field_0go6g4p"
-    },
-    {
-      "label": "Table",
-      "type": "table",
-      "layout": {
-        "row": "Row_1kewvd9",
-        "columns": null
-      },
-      "rowCount": 10,
-      "columns": [
-        {
-          "label": "ID",
-          "key": "id"
-        },
-        {
-          "label": "Name",
-          "key": "name"
-        },
-        {
-          "label": "Date",
-          "key": "date"
-        }
-      ],
-      "id": "Field_0hi1lhk",
-      "dataSource": "=suppliersCollection[0]"
     }
   ],
   "type": "default",
