@@ -1,5 +1,4 @@
 from concurrent.futures.thread import ThreadPoolExecutor
-import requests, json, logging
 
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
@@ -120,7 +119,6 @@ if __name__ == '__main__':
     # how to get this list from the class itself: https://realpython.com/python-callable-instances/#creating-callable-instances-with-__call__-in-python
     # add here all the methods of the CamundaHandlers Class here..(they should correspond one-to-one to the topics)
     handlersList = [
-        handlers.query_RAMP_catalogue,
         handlers.query_RAMP_catalogue,
         handlers.filter_generic_suppliers,
         handlers.search_trusted,
