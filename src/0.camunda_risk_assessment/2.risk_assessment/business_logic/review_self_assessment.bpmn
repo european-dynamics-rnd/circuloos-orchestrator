@@ -31,7 +31,7 @@
     <bpmn:association id="Association_1japwr3" associationDirection="None" sourceRef="Activity_0mjgrea" targetRef="TextAnnotation_0mdv7em" />
     <bpmn:association id="Association_00h059t" associationDirection="None" sourceRef="Activity_0vopke4" targetRef="TextAnnotation_0svl573" />
   </bpmn:collaboration>
-  <bpmn:process id="Process_08reqk5" name="Risk Assessment" isExecutable="true">
+  <bpmn:process id="Process_08reqk5" name="Risk Assessment" isExecutable="true" camunda:historyTimeToLive="365">
     <bpmn:extensionElements />
     <bpmn:manualTask id="Activity_1s4j8zn" name="Suggest Reject high-risk Supplier">
       <bpmn:incoming>Flow_1ikjc9m</bpmn:incoming>
