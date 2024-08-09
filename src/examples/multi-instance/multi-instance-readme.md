@@ -73,7 +73,7 @@ A call activity is used to encapsulate a reusable BPMN process that can be invok
 ### Example Use Case
 ![Call activity](call-activity-img.png)
 
-Call activity documentation [here](https://docs.camunda.org/manual/7.21/reference/bpmn20/subprocesses/call-activity/).
+Call activity documentation [here](https://docs.camunda.org/manual/7.21/reference/bpmn20/subprocesses/call-activity/). 
 
 
 ## How to Deploy and Test
