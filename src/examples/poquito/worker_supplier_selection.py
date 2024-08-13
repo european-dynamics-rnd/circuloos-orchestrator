@@ -1,5 +1,7 @@
+import logging
 from concurrent.futures.thread import ThreadPoolExecutor
 
+import requests
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 from camunda.utils.log_utils import log_with_context
@@ -22,15 +24,18 @@ class CamundaHandlers:
             "query_RAMP_catalogue",
             "filter_generic_suppliers",
             "search_trusted",
-            "filter_trusted"
-        ]    # add the subscription here (each method in this class)
+            "filter_trusted",
+            "request_proof_of_work",
+            "repeat_request",
+            "unresponsive_supplier"
+        ]  # add the subscription here (each method in this class)
 
         self.helper = helperInstance
         ## uncomment the next line if you want the logging text in stdout
         # self.helper.configure_logging()  # can get a bit verbose (tasks continue polling after completing)
 
     def query_RAMP_catalogue(self, task: ExternalTask) -> TaskResult:
-        print(f'Material: { str(task.get_variable("Material")) }')
+        print(f'Material: {str(task.get_variable("Material"))}')
 
         payload = {
             'Material': str(task.get_variable('Material')),
@@ -39,16 +44,6 @@ class CamundaHandlers:
         }
         r = requests.post('http://127.0.0.1:5000/fetch_new_supplier', json=payload)
         print(f'REST response: {r.text}')
-
-        # suppliersCollection = {
-        #     "companies":
-        #         [
-        #             {
-        #                 'id': '999',
-        #                 'companyName': 'i hate RAMP!'
-        #             }
-        #         ]
-        # }
 
         # suppliersCollection = ['foo', 'bar']
         suppliersCollection = [
@@ -80,7 +75,7 @@ class CamundaHandlers:
         return task.complete({"nowHas_sortedCollectionOfSuppliers": True, 'suppliersCollection': suppliersCollection})
         # return task.complete({"nowHas_sortedCollectionOfSuppliers": True, 'suppliersCollection': json.dumps(suppliersCollection)})
 
-    def search_trusted(self, task:ExternalTask):
+    def search_trusted(self, task: ExternalTask):
         print(f'searched among the trusted and here are the results...')
         return task.complete()
 
@@ -88,6 +83,20 @@ class CamundaHandlers:
         print(f'filter_trusted: complete')
         return task.complete()
 
+    def request_proof_of_work(self, task: ExternalTask):
+        print(f'Requesting proof of work for: {str(task.get_variable("supplier"))}')
+
+        # We can also correlate the message here and call receive task
+
+        return task.complete()
+
+    def unresponsive_supplier(self, task: ExternalTask):
+        print(f'unresponsive supplier: {str(task.get_variable("supplier"))}')
+        return task.complete()
+
+    def repeat_request(self, task: ExternalTask):
+        print("repeating request")
+        return task.complete()
 
 class Helpers:
     def configure_logging(self):
@@ -122,9 +131,11 @@ if __name__ == '__main__':
         handlers.query_RAMP_catalogue,
         handlers.filter_generic_suppliers,
         handlers.search_trusted,
-        handlers.filter_trusted
+        handlers.filter_trusted,
+        handlers.request_proof_of_work,
+        handlers.repeat_request,
+        handlers.unresponsive_supplier
     ]
-
 
     # handlersList = handlers.list_methods()[:-1]
     print(f'handlersList: {handlersList}')

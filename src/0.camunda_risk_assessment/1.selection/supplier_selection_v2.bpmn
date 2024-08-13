@@ -105,17 +105,20 @@ make it executable and deploy it for testing
       <bpmn:incoming>Flow_05czjuj</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:subProcess id="UserPicksSupplier" name="User picks supplier">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_030fzki</bpmn:incoming>
       <bpmn:outgoing>Flow_1j3y53s</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${suppliersCollection}" camunda:elementVariable="supplier">
         <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${qualifySupplier == true}</bpmn:completionCondition>
       </bpmn:multiInstanceLoopCharacteristics>
       <bpmn:sequenceFlow id="Flow_1hgmghg" sourceRef="Activity_1ua0xtc" targetRef="Event_1lb5y7z" />
-      <bpmn:sequenceFlow id="Flow_1tmbqn8" sourceRef="Activity_104b8ra" targetRef="Activity_1ua0xtc" />
       <bpmn:sequenceFlow id="Flow_0ci8syr" sourceRef="Event_1jqy03l" targetRef="Activity_104b8ra" />
       <bpmn:endEvent id="Event_1lb5y7z">
         <bpmn:incoming>Flow_1hgmghg</bpmn:incoming>
       </bpmn:endEvent>
+      <bpmn:startEvent id="Event_1jqy03l">
+        <bpmn:outgoing>Flow_0ci8syr</bpmn:outgoing>
+      </bpmn:startEvent>
       <bpmn:userTask id="Activity_104b8ra" name="User Selects one for investigation" camunda:formRef="QualifySupplier" camunda:formRefBinding="latest">
         <bpmn:extensionElements>
           <zeebe:formDefinition formId="Form_1gyu3nw" />
@@ -123,13 +126,20 @@ make it executable and deploy it for testing
         <bpmn:incoming>Flow_0ci8syr</bpmn:incoming>
         <bpmn:outgoing>Flow_1tmbqn8</bpmn:outgoing>
       </bpmn:userTask>
-      <bpmn:startEvent id="Event_1jqy03l">
-        <bpmn:outgoing>Flow_0ci8syr</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:manualTask id="Activity_1ua0xtc" name="Carry out Risk Assessment">
+      <bpmn:sequenceFlow id="Flow_1tmbqn8" sourceRef="Activity_104b8ra" targetRef="Activity_1ua0xtc" />
+      <bpmn:callActivity id="Activity_1ua0xtc" name="Carry out Risk Assessment" calledElement="RiskAssessmentPhases">
+        <bpmn:extensionElements>
+          <camunda:in local="true" variables="all" />
+          <camunda:inputOutput>
+            <camunda:inputParameter name="supplier">${supplier}</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
         <bpmn:incoming>Flow_1tmbqn8</bpmn:incoming>
         <bpmn:outgoing>Flow_1hgmghg</bpmn:outgoing>
-      </bpmn:manualTask>
+      </bpmn:callActivity>
+      <bpmn:boundaryEvent id="Event_1hosvyc" attachedToRef="Activity_1ua0xtc">
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_10t3x8t" errorRef="Error_16zv45h" />
+      </bpmn:boundaryEvent>
     </bpmn:subProcess>
     <bpmn:serviceTask id="FilterRankGeneric" name="Filter &#38; Rank results" camunda:type="external" camunda:topic="filter_generic_suppliers">
       <bpmn:documentation>- based on entry criteria (see previous form)
@@ -175,6 +185,7 @@ make it executable and deploy it for testing
   </bpmn:process>
   <bpmn:error id="Error_1ymm87p" name="SuppliersListExhausted" errorCode="SuppliersListExhausted" />
   <bpmn:error id="Error_0psfqym" name="emptySourcingStrategy" errorCode="emptySourcingStrategy" />
+  <bpmn:error id="Error_16zv45h" name="unresponsive_supplier" errorCode="unresponsive_supplier" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SupplierSelection">
       <bpmndi:BPMNShape id="Participant_0uvgh9p_di" bpmnElement="VendorOnboardingEngine" isHorizontal="true">
@@ -247,11 +258,16 @@ make it executable and deploy it for testing
       <bpmndi:BPMNShape id="Event_1jqy03l_di" bpmnElement="Event_1jqy03l">
         <dc:Bounds x="1412" y="409" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_184wfmw_di" bpmnElement="Activity_1ua0xtc">
+      <bpmndi:BPMNShape id="Activity_1jjwvrg_di" bpmnElement="Activity_1ua0xtc">
         <dc:Bounds x="1720" y="384" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hosvyc_di" bpmnElement="Event_1hosvyc">
+        <dc:Bounds x="1782" y="446" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1hgmghg_di" bpmnElement="Flow_1hgmghg">
-        <di:waypoint x="1820" y="426" />
+        <di:waypoint x="1820" y="425" />
+        <di:waypoint x="1846" y="425" />
+        <di:waypoint x="1846" y="427" />
         <di:waypoint x="1872" y="427" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1tmbqn8_di" bpmnElement="Flow_1tmbqn8">
