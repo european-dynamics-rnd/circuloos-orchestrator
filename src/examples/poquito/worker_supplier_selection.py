@@ -27,7 +27,13 @@ class CamundaHandlers:
             "filter_trusted",
             "request_proof_of_work",
             "repeat_request",
-            "unresponsive_supplier"
+            "unresponsive_supplier",
+            "update_ramp_registry",
+            "weigh_in_reputation_from_RAMP_registry",
+            "create_log_entry",
+            "remind_supervisor",
+            "failure_to_handle_risk_assessment",
+            "update_RAMP_registry"
         ]  # add the subscription here (each method in this class)
 
         self.helper = helperInstance
@@ -98,6 +104,54 @@ class CamundaHandlers:
         print("repeating request")
         return task.complete()
 
+    def update_ramp_registry(self, task: ExternalTask):
+        print("updating RAMP registry")
+        return task.complete()
+
+    def weigh_in_reputation_from_RAMP_registry(self, task: ExternalTask):
+        print(f'Weighing in reputation from RAMP registry for supplier: {str(task.get_variable("supplier"))}')
+
+        try:
+            # Simulate an error by raising an exception
+            raise ValueError("Simulated error for testing RAMP_LOG_ERROR handling")
+
+            # Normally, you would process the logic here
+            reputation_data = {
+                "supplier": str(task.get_variable("supplier")),
+                "score": 85  # Mocked reputation score
+            }
+            print(f'Reputation data: {reputation_data}')
+
+            # Continue with task completion if everything is successful
+            return task.complete({"reputationData": reputation_data})
+
+        except Exception as e:
+            logger.error(f"Error weighing in reputation: {e}")
+            # Handle the error with RAMP_LOG_ERROR
+            return task.bpmn_error(
+                error_code="RAMP_LOG_ERROR",  # Must match the error code in your BPMN model
+                error_message="An error occurred while weighing in reputation from RAMP registry."
+            )
+
+    def create_log_entry(self, task: ExternalTask):
+        print("RAMP IS UNRESPONSIVE, CREATING LOG ENTRY ")
+        return task.complete()
+
+    def remind_supervisor(self, task: ExternalTask):
+        print("Sending email to remind supervisor")
+        return task.complete()
+
+    def failure_to_handle_risk_assessment(self, task: ExternalTask):
+        print("failure to handle risk assessment")
+        return task.complete()
+
+    def update_RAMP_registry(self, task: ExternalTask):
+        print("updating RAMP registry")
+        return task.complete()
+
+
+
+
 class Helpers:
     def configure_logging(self):
         logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s",
@@ -134,7 +188,13 @@ if __name__ == '__main__':
         handlers.filter_trusted,
         handlers.request_proof_of_work,
         handlers.repeat_request,
-        handlers.unresponsive_supplier
+        handlers.unresponsive_supplier,
+        handlers.update_ramp_registry,
+        handlers.weigh_in_reputation_from_RAMP_registry,
+        handlers.create_log_entry,
+        handlers.remind_supervisor,
+        handlers.failure_to_handle_risk_assessment,
+        handlers.update_RAMP_registry
     ]
 
     # handlersList = handlers.list_methods()[:-1]

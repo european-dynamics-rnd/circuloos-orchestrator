@@ -12,9 +12,13 @@
       <bpmn:outgoing>Flow_0osuwp3</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0xgzij4" sourceRef="StartEvent_1" targetRef="Activity_0mbf2ii" />
-    <bpmn:callActivity id="Activity_137dxqk" name="Review Self-Assessment" calledElement="decide_on_self_assessment_input">
+    <bpmn:callActivity id="Activity_137dxqk" name="Review Self-Assessment" calledElement="review_self_assessment">
       <bpmn:extensionElements>
         <zeebe:calledElement processId="Collaboration_1pnlym7" propagateAllChildVariables="false" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="supplier">${supplier}</camunda:inputParameter>
+        </camunda:inputOutput>
+        <camunda:in local="true" variables="all" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0osuwp3</bpmn:incoming>
       <bpmn:outgoing>Flow_1mh5eb2</bpmn:outgoing>
@@ -139,7 +143,7 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_05sb3p2" associationDirection="None" sourceRef="Activity_1razahy" targetRef="TextAnnotation_1870tgf" />
   </bpmn:process>
-  <bpmn:error id="Error_0rllo98" name="noRiskAssessment" errorCode="=999" />
+  <bpmn:error id="Error_0rllo98" name="noRiskAssessment" errorCode="manager_unresponsive" />
   <bpmn:message id="Message_2l7kusi" name="waiting_for_sample" />
   <bpmn:error id="Error_06pl99w" name="unresponsive_supplier" errorCode="unresponsive_supplier" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -204,12 +208,6 @@
       <bpmndi:BPMNShape id="Activity_17tsg2z_di" bpmnElement="Activity_13tjqf2">
         <dc:Bounds x="1140" y="247" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1toy759_di" bpmnElement="wait_6_days">
-        <dc:Bounds x="742" y="462" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="692" y="503" width="55" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0v33qm8_di" bpmnElement="TextAnnotation_0v33qm8">
         <dc:Bounds x="500" y="540" width="100" height="142" />
         <bpmndi:BPMNLabel />
@@ -217,6 +215,12 @@
       <bpmndi:BPMNShape id="TextAnnotation_1870tgf_di" bpmnElement="TextAnnotation_1870tgf">
         <dc:Bounds x="1390" y="160" width="100" height="41" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1toy759_di" bpmnElement="wait_6_days">
+        <dc:Bounds x="742" y="462" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="692" y="503" width="55" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0vs5joc_di" bpmnElement="wait_2_Days">
         <dc:Bounds x="782" y="462" width="36" height="36" />
@@ -305,6 +309,11 @@
         <di:waypoint x="950" y="670" />
         <di:waypoint x="992" y="670" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r1y6vj_di" bpmnElement="Flow_1r1y6vj">
+        <di:waypoint x="760" y="498" />
+        <di:waypoint x="760" y="670" />
+        <di:waypoint x="850" y="670" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1i4gik6_di" bpmnElement="Association_1i4gik6">
         <di:waypoint x="740" y="464" />
         <di:waypoint x="581" y="540" />
@@ -312,11 +321,6 @@
       <bpmndi:BPMNEdge id="Association_05sb3p2_di" bpmnElement="Association_05sb3p2">
         <di:waypoint x="1376" y="247" />
         <di:waypoint x="1417" y="201" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1r1y6vj_di" bpmnElement="Flow_1r1y6vj">
-        <di:waypoint x="760" y="498" />
-        <di:waypoint x="760" y="670" />
-        <di:waypoint x="850" y="670" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
