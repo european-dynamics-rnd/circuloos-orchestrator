@@ -21,6 +21,7 @@ default_config = {
 class CamundaHandlers:
     def __init__(self, helperInstance):
         self.topics = [
+            "submit_form",
             "query_RAMP_catalogue",
             "filter_generic_suppliers",
             "search_trusted",
@@ -37,8 +38,29 @@ class CamundaHandlers:
         ]  # add the subscription here (each method in this class)
 
         self.helper = helperInstance
-        ## uncomment the next line if you want the logging text in stdout
+        # uncomment the next line if you want the logging text in stdout
         # self.helper.configure_logging()  # can get a bit verbose (tasks continue polling after completing)
+
+    def submit_form(self, task: ExternalTask):
+        print("Sending requirements...")
+
+        business_key = task.get_business_key()
+        form_name = task.get_activity_id()
+        print("formName: ", form_name)
+        print("business_key: ", business_key, "\n")
+        payload = {
+            "variables": task.get_variables(),
+            "businessKey": business_key,
+            "formName": form_name
+        }
+        response = requests.post("http://localhost:8081/ms/company/api/v1/camunda/submit-task-data",
+                                 json=payload)
+
+        if response.status_code != 200:
+            print("Form request failed with status code:", response.status_code)
+            return TaskResult.failure("Failed to request form", response.text, retries=0)
+
+        return task.complete()
 
     def query_RAMP_catalogue(self, task: ExternalTask) -> TaskResult:
         print(f'Material: {str(task.get_variable("Material"))}')
@@ -113,17 +135,9 @@ class CamundaHandlers:
 
         try:
             # Simulate an error by raising an exception
-            raise ValueError("Simulated error for testing RAMP_LOG_ERROR handling")
+            # raise ValueError("Simulated error for testing RAMP_LOG_ERROR handling")
 
-            # Normally, you would process the logic here
-            reputation_data = {
-                "supplier": str(task.get_variable("supplier")),
-                "score": 85  # Mocked reputation score
-            }
-            print(f'Reputation data: {reputation_data}')
-
-            # Continue with task completion if everything is successful
-            return task.complete({"reputationData": reputation_data})
+            return task.complete()
 
         except Exception as e:
             logger.error(f"Error weighing in reputation: {e}")
@@ -148,8 +162,6 @@ class CamundaHandlers:
     def update_RAMP_registry(self, task: ExternalTask):
         print("updating RAMP registry")
         return task.complete()
-
-
 
 
 class Helpers:
@@ -182,6 +194,7 @@ if __name__ == '__main__':
     # how to get this list from the class itself: https://realpython.com/python-callable-instances/#creating-callable-instances-with-__call__-in-python
     # add here all the methods of the CamundaHandlers Class here..(they should correspond one-to-one to the topics)
     handlersList = [
+        handlers.submit_form,
         handlers.query_RAMP_catalogue,
         handlers.filter_generic_suppliers,
         handlers.search_trusted,
@@ -198,10 +211,11 @@ if __name__ == '__main__':
     ]
 
     # handlersList = handlers.list_methods()[:-1]
-    print(f'handlersList: {handlersList}')
+    # print(f'handlersList: {handlersList}')
     executor = ThreadPoolExecutor(max_workers=len(handlers.topics))
 
     for index, topic in enumerate(handlers.topics):
         executor.submit(
-            ExternalTaskWorker(worker_id=topic[index], config=default_config).subscribe, topic, handlersList[index]
+            ExternalTaskWorker(worker_id=topic[index], config=default_config,
+                               base_url="http://localhost:8089/engine-rest").subscribe, topic, handlersList[index]
         )

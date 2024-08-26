@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "Qualify Supplier",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_14ymt3i",
+        "columns": null
+      },
+      "id": "Field_1ehpu99",
+      "key": "qualifySupplier"
+    }
+  ],
+  "type": "default",
+  "id": "qualify_supplier",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.25.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "schemaVersion": 16
+}
