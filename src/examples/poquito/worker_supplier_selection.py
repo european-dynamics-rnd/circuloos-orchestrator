@@ -5,6 +5,7 @@ import requests
 from camunda.external_task.external_task import ExternalTask, TaskResult
 from camunda.external_task.external_task_worker import ExternalTaskWorker
 from camunda.utils.log_utils import log_with_context
+from pydantic import json
 
 logger = logging.getLogger(__name__)
 # configuration for the Client
@@ -26,6 +27,7 @@ class CamundaHandlers:
             "filter_generic_suppliers",
             "search_trusted",
             "filter_trusted",
+            "risk_assessment_for_company_users",
             "request_proof_of_work",
             "repeat_request",
             "unresponsive_supplier",
@@ -42,16 +44,47 @@ class CamundaHandlers:
         # self.helper.configure_logging()  # can get a bit verbose (tasks continue polling after completing)
 
     def submit_form(self, task: ExternalTask):
-        print("Sending requirements...")
+        print("Sending to RAMP backend to fill form: ")
 
         business_key = task.get_business_key()
         form_name = task.get_activity_id()
+        assigned_to = business_key
         print("formName: ", form_name)
         print("business_key: ", business_key, "\n")
         payload = {
             "variables": task.get_variables(),
             "businessKey": business_key,
-            "formName": form_name
+            "formName": form_name,
+            "assignedTo": assigned_to
+        }
+        response = requests.post("http://localhost:8081/ms/company/api/v1/camunda/submit-task-data",
+                                 json=payload)
+
+        if response.status_code != 200:
+            print("Form request failed with status code:", response.status_code)
+            return TaskResult.failure("Failed to request form", response.text, retries=0)
+
+        return task.complete()
+
+    def risk_assessment_for_company_users(self, task: ExternalTask):
+        print("Asking users to complete risk assessment...")
+
+        business_key = task.get_business_key()
+        supplier_data = task.get_variable('supplier')
+        if isinstance(supplier_data, str):
+            supplier_data = json.loads(supplier_data)
+        company_owner = supplier_data.get('companyOwner')
+        print(f"Company Owner: {company_owner}")
+
+        form_name = task.get_activity_id()
+        assigned_to = company_owner
+        print("formName: ", form_name)
+        print("business_key: ", business_key, "\n")
+        payload = {
+            "variables": task.get_variables(),
+            "businessKey": business_key,
+            "formName": form_name,
+            "assignedTo": assigned_to
         }
         response = requests.post("http://localhost:8081/ms/company/api/v1/camunda/submit-task-data",
                                  json=payload)
@@ -76,12 +109,14 @@ class CamundaHandlers:
         # suppliersCollection = ['foo', 'bar']
         suppliersCollection = [
             {
-                'id': '999',
-                'companyName': 'somethinghere'
+                'id': 'df1b8761-ef2f-4f67-b74a-57256f9b006c',
+                'companyName': 'European Dynamics',
+                'companyOwner': 'admin@mail.com'
             },
             {
-                'id': '000',
-                'companyName': 'sdf442'
+                'id': 'feb8f58a-ddec-495d-baad-ecac080b7c22',
+                'companyName': 'KITT4SME',
+                'companyOwner': 'kitt@mail.com'
             }
         ]
 
@@ -199,6 +234,7 @@ if __name__ == '__main__':
         handlers.filter_generic_suppliers,
         handlers.search_trusted,
         handlers.filter_trusted,
+        handlers.risk_assessment_for_company_users,
         handlers.request_proof_of_work,
         handlers.repeat_request,
         handlers.unresponsive_supplier,
