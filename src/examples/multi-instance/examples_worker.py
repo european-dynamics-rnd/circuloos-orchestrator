@@ -81,12 +81,12 @@ if __name__ == '__main__':
     # add here all the methods of the CamundaHandlers Class (they should correspond one-to-one with the `topics`);
     # these get in the next line to the threads that subscribe to the Camunda Engine
     handlersList = [
-        handlers.template_handler
+        handlers.create_list
     ]
 
     executor = ThreadPoolExecutor(max_workers=len(topics))
 
     for index, topic in enumerate(topics):
         executor.submit(
-            ExternalTaskWorker(worker_id=topic[index], config=default_config).subscribe, topic, handlersList[index]
+            ExternalTaskWorker(worker_id=topic[index],base_url="http://localhost:8089/engine-rest", config=default_config).subscribe, topic, handlersList[index]
         )
