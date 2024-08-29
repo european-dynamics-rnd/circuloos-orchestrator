@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_04s9rgo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_04s9rgo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:collaboration id="Collaboration_0916yvx">
     <bpmn:participant id="Participant_0opblkc" name="Test" processRef="parent" />
   </bpmn:collaboration>
@@ -16,11 +16,13 @@
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_1ytde7s</bpmn:incoming>
       <bpmn:outgoing>Flow_0xuz75i</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${suppliersCollection}" camunda:elementVariable="supplier" />
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${suppliersCollection}" camunda:elementVariable="supplier">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${quilify==true}</bpmn:completionCondition>
+      </bpmn:multiInstanceLoopCharacteristics>
       <bpmn:startEvent id="Event_0qvu4ai">
         <bpmn:outgoing>Flow_0ym7xkd</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:userTask id="Activity_0cynnry" name="user selects from list">
+      <bpmn:userTask id="Activity_0cynnry" name="user selects from list" camunda:formRef="describe_needs" camunda:formRefBinding="latest">
         <bpmn:incoming>Flow_0ym7xkd</bpmn:incoming>
         <bpmn:outgoing>Flow_18f3zju</bpmn:outgoing>
       </bpmn:userTask>
@@ -32,6 +34,14 @@
       <bpmn:callActivity id="Activity_0wd6tkm" name="risk assasment" calledElement="child">
         <bpmn:extensionElements>
           <camunda:in local="true" variables="all" />
+          <camunda:in businessKey="#{execution.processBusinessKey}" />
+          <camunda:inputOutput>
+            <camunda:inputParameter name="supplier">${supplier}</camunda:inputParameter>
+            <camunda:inputParameter name="selfAssessment">${selfAssessment}</camunda:inputParameter>
+            <camunda:inputParameter name="evidence">${evidence}</camunda:inputParameter>
+            <camunda:outputParameter name="quilify">${quilify}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:out local="true" variables="all" />
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_18f3zju</bpmn:incoming>
         <bpmn:outgoing>Flow_100x40w</bpmn:outgoing>
