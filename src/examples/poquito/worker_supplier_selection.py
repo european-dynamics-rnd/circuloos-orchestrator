@@ -71,6 +71,11 @@ class CamundaHandlers:
 
         business_key = task.get_business_key()
         supplier_data = task.get_variable('supplier')
+
+        # if parallel instance use processInstanceId
+        process_instance_id = task.get_process_instance_id()
+
+
         if isinstance(supplier_data, str):
             supplier_data = json.loads(supplier_data)
         company_owner = supplier_data.get('companyOwner')
@@ -85,6 +90,9 @@ class CamundaHandlers:
             "businessKey": business_key,
             "formName": form_name,
             "assignedTo": assigned_to
+
+            # if parallel instance add processInstanceId
+            # "processInstanceId": process_instance_id
         }
         response = requests.post("http://localhost:8081/ms/company/api/v1/camunda/submit-task-data",
                                  json=payload)
