@@ -13,14 +13,7 @@
 ### 3. User Starts the Process via Frontend
 
 - The user initiates a new process from the Angular frontend.
-- The frontend sends a `POST` request to the Java backend to start this process including:
-  ```json
-  {
-  "definitionKey":  "VOE",
-  "businessKey":  "exampleUser@mail.com",
-  "variables":  {}
-  }
-  ```
+- The frontend sends a `POST` request to the Java backend to start this process.
 
 ### 4. Java Backend Starts Process in Camunda Engine
 
