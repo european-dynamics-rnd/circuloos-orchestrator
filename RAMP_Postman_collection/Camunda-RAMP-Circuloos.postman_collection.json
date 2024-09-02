@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "757b64f5-b133-4192-9724-9ca0113ef871",
+		"name": "Camunda-RAMP-Circuloos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20754895"
+	},
+	"item": [
+		{
+			"name": "start process",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"definitionKey\": \"VOE\",\r\n    \"businessKey\": \"petros@mail.com\",\r\n    \"variables\": {}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "front-end-polling/get-form-completion-status by email and status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/get-form-completion-status/petros@mail.com/pending",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"get-form-completion-status",
+						"petros@mail.com",
+						"pending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "starting_requirements_form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": \"gold\",\r\n  \"color\": \"red\",\r\n  \"normative\": \"test normative\",\r\n  \"trusted\": false,\r\n  \"fromRAMP\": true,\r\n  \"deliveryDate\": \"2024-08-14T00:00:00.000Z\",\r\n  \"rampGeneral\" : true,\r\n  \"openCall\" : false,\r\n  \"sourceMaterial\": \"the source material\"\r\n  // check value types <---\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/user-response/petros@mail.com/send_starting_requirements/assignedTo/petros@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"user-response",
+						"petros@mail.com",
+						"send_starting_requirements",
+						"assignedTo",
+						"petros@mail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "risk_assessment_form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"visitNeeded\": true,\r\n  \"selfAssessmentNeeded\": true ,\r\n  \"evidenceNeeded\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/user-response/petros@mail.com/risk_assessment_requirements/assignedTo/petros@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"user-response",
+						"petros@mail.com",
+						"risk_assessment_requirements",
+						"assignedTo",
+						"petros@mail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send_sample",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"messageName\" : \"waiting_for_sample\",\r\n    \"businessKey\" : \"petros@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/engine-rest/message",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"engine-rest",
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visit_on_permise_form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"visitReason\": \"example text, example text, example text, example text, example text, \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/user-response/petros@mail.com/visit_on_premise/assignedTo/admin@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"user-response",
+						"petros@mail.com",
+						"visit_on_premise",
+						"assignedTo",
+						"admin@mail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fill_assessment_form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n\r\n{\r\n    \"selfAssessment\" : \"Self assessment entry data\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/user-response/petros@mail.com/fill_self_assessment/assignedTo/admin@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"user-response",
+						"petros@mail.com",
+						"fill_self_assessment",
+						"assignedTo",
+						"admin@mail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "run_risk_assessment_rules_form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"someRules\" : \"rules\",\r\n    \"score\" : 85\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/ms/company/api/v1/camunda/user-response/petros@mail.com/run_risk_assessment_rules/assignedTo/petros@mail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"ms",
+						"company",
+						"api",
+						"v1",
+						"camunda",
+						"user-response",
+						"petros@mail.com",
+						"run_risk_assessment_rules",
+						"assignedTo",
+						"petros@mail.com"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
