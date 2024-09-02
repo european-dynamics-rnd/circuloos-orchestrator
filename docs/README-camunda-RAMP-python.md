@@ -4,7 +4,6 @@
 ### 1. Deploy BPMN Diagram via Camunda Modeler
 
 - The BPMN diagram is created and deployed using the Camunda Modeler.
-- This diagram defines the workflow and tasks that will be managed by the Camunda engine.
 
 ### 2. Run Python External Workers
 
@@ -15,24 +14,24 @@
 
 - The user initiates a new process from the Angular frontend.
 - The frontend sends a `POST` request to the Java backend to start this process including:
-```json
-{
-"definitionKey":  "VOE",
-"businessKey":  "exampleUser@mail.com",
-"variables":  {}
-}
-```
+  ```json
+  {
+  "definitionKey":  "VOE",
+  "businessKey":  "exampleUser@mail.com",
+  "variables":  {}
+  }
+  ```
 
 ### 4. Java Backend Starts Process in Camunda Engine
 
 - The Java backend receives the `POST` request and forwards it to the Camunda engine to create a new process instance.
-- The user’s email is used as the business key in this request, allowing the process instance to be uniquely identified by the user.
-- There are checks that don't allow to start multiple process with the same businessKey. 
+- The **user’s email** is used as the **business key** in this request, allowing the process instance to be uniquely identified by the user.
+- There are checks that don't allow to start multiple process with the same business key. 
 
 ### 5. External Worker Sends Task Request to RAMP Backend
 
 - When a `sendTask` is reached in the process, the Python external worker sends a request to the RAMP backend, indicating that user input is required.
-- This typically corresponds to exchange variables between camunda and user response.
+- This typically corresponds to exchange variables between Camunda engine and user input.
 
 ### 6. RAMP Backend Stores Task Information
 
@@ -48,6 +47,10 @@
 - If a pending form is found, the frontend displays the form to the user for completion.
 - Once the user fills out the form, the frontend sends the data back to the RAMP backend, which updates the task status to `completed`.
 
+
+### 8. RAMP Backend sends Message to Camunda Engine
+- When a user fills the form and the frontend sends the data back to the RAMP backend, then the backend also
+sends a message to Camunda engine to a **"Receive Task"** to pass the data to Camunda Engine.
 ---
 
 
