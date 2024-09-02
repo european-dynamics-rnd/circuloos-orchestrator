@@ -1,28 +1,34 @@
 {
   "components": [
     {
-      "values": [
-        {
-          "label": "Self-Assessment form",
-          "value": "selfAssessmentNeeded"
-        },
-        {
-          "label": "Proof of Work",
-          "value": "evidenceNeeded"
-        },
-        {
-          "label": "Visit on premise",
-          "value": "visitNeeded"
-        }
-      ],
-      "label": "Which means of verification do you need for the risk assessment?",
-      "type": "checklist",
+      "label": "Visit on premise",
+      "type": "checkbox",
       "layout": {
-        "row": "Row_18noklz",
+        "row": "Row_0amjws9",
         "columns": null
       },
-      "id": "Field_0j5cn6g",
-      "key": "checklist_hhpu6q"
+      "id": "Field_0dgjvl4",
+      "key": "visitNeeded"
+    },
+    {
+      "label": "Self Assessment Needed",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0mixxlq",
+        "columns": null
+      },
+      "id": "Field_06m3u16",
+      "key": "selfAssessmentNeeded"
+    },
+    {
+      "label": "Evidence",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1lbva72",
+        "columns": null
+      },
+      "id": "Field_0bpote6",
+      "key": "evidenceNeeded"
     }
   ],
   "type": "default",

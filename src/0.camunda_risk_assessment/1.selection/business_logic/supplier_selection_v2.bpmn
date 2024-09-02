@@ -6,46 +6,13 @@
     <bpmn:participant id="VendorOnboardingEngine" name="Vendor Onboarding Engine" processRef="VOE" />
     <bpmn:participant id="Participant_1c87g8e" name="RAMP" />
     <bpmn:messageFlow id="Flow_0iehtly" sourceRef="Participant_1c87g8e" targetRef="Activity_04u836q" />
-    <bpmn:messageFlow id="Flow_1ha8bdi" sourceRef="Participant_1c87g8e" targetRef="Activity_0k498nr" />
+    <bpmn:messageFlow id="Flow_1ha8bdi" sourceRef="Participant_1c87g8e" targetRef="query_ramp_catalogue" />
     <bpmn:messageFlow id="Flow_0xmrjn1" sourceRef="Participant_1c87g8e" targetRef="search_trusted" />
-    <bpmn:textAnnotation id="TextAnnotation_14jk9oc">
-      <bpmn:text>todos:
-make it executable and deploy it for testing
-
-- create simple forms and match the variables on the decisions
-- create simple responses for the outside workers
-
-- test the use of the OR gateway - should work here
-- check error handling</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_1ryk781" associationDirection="None" sourceRef="Participant_1c87g8e" targetRef="TextAnnotation_14jk9oc" />
-    <bpmn:textAnnotation id="TextAnnotation_13isr5i">
-      <bpmn:text>vars are needed in the filtering ext.Task</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_0j20fl4" associationDirection="None" sourceRef="Activity_08maxun" targetRef="TextAnnotation_13isr5i" />
-    <bpmn:textAnnotation id="TextAnnotation_0nka48m">
-      <bpmn:text>the loop marker is not implemented: https://docs.camunda.org/manual/7.21/reference/bpmn20/tasks/task-markers/</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_07w036m" associationDirection="None" sourceRef="UserPicksSupplier" targetRef="TextAnnotation_0nka48m" />
   </bpmn:collaboration>
   <bpmn:process id="VOE" isExecutable="true" camunda:historyTimeToLive="99">
     <bpmn:startEvent id="StartEvent_1" name="Selection of *one* Supplier">
       <bpmn:outgoing>Flow_0jgvcre</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="DefineEntryQualifiers" name="Define Entry Qualifiers" camunda:formRef="DefineEntryQualifiers" camunda:formRefBinding="latest">
-      <bpmn:extensionElements>
-        <zeebe:formDefinition formId="Form_1hlvex6" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1wag2sp</bpmn:incoming>
-      <bpmn:outgoing>Flow_0mvdyn7</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="Activity_08maxun" name="Define Sourcing Requirements" camunda:formRef="DefineSourcingRequirements" camunda:formRefBinding="latest">
-      <bpmn:extensionElements>
-        <zeebe:formDefinition formId="Form_0fc6bst" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0jgvcre</bpmn:incoming>
-      <bpmn:outgoing>Flow_1wag2sp</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_0larksp" name="go with trusted?">
       <bpmn:incoming>Flow_0mvdyn7</bpmn:incoming>
       <bpmn:outgoing>Flow_1aupq98</bpmn:outgoing>
@@ -56,27 +23,18 @@ make it executable and deploy it for testing
       <bpmn:outgoing>Flow_1i6k1se</bpmn:outgoing>
       <bpmn:outgoing>Flow_1n6q469</bpmn:outgoing>
     </bpmn:inclusiveGateway>
-    <bpmn:serviceTask id="Activity_0k498nr" name="Query RAMP catalogue&#10;(general)" camunda:type="external" camunda:topic="query_RAMP_catalogue">
+    <bpmn:serviceTask id="query_ramp_catalogue" name="Query RAMP catalogue&#10;(general)" camunda:type="external" camunda:topic="query_RAMP_catalogue">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="=1" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1i6k1se</bpmn:incoming>
       <bpmn:outgoing>Flow_1t3ouyz</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:manualTask id="Activity_04u836q" name="Create Call for new Suppliers">
-      <bpmn:documentation>create an Open Call page and send notification to the entire RAMP community?</bpmn:documentation>
-      <bpmn:incoming>Flow_1n6q469</bpmn:incoming>
-      <bpmn:outgoing>Flow_0blk4ld</bpmn:outgoing>
-    </bpmn:manualTask>
     <bpmn:inclusiveGateway id="Gateway_154uvr5">
       <bpmn:incoming>Flow_0blk4ld</bpmn:incoming>
       <bpmn:incoming>Flow_1t3ouyz</bpmn:incoming>
       <bpmn:outgoing>Flow_08o4iw9</bpmn:outgoing>
     </bpmn:inclusiveGateway>
-    <bpmn:manualTask id="Activity_0kmw64z" name="Onboard the Supplier">
-      <bpmn:incoming>Flow_1j3y53s</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ltr1qe</bpmn:outgoing>
-    </bpmn:manualTask>
     <bpmn:serviceTask id="search_trusted" name="Search among trusted suppliers &#10;(in RAMP?)" camunda:type="external" camunda:topic="search_trusted">
       <bpmn:documentation>trusted are the ones this company has worked with in the past</bpmn:documentation>
       <bpmn:extensionElements>
@@ -104,56 +62,92 @@ make it executable and deploy it for testing
     <bpmn:endEvent id="Event_1wqq80e" name="Selected a Known Supplier">
       <bpmn:incoming>Flow_05czjuj</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:subProcess id="UserPicksSupplier" name="User picks supplier">
-      <bpmn:incoming>Flow_030fzki</bpmn:incoming>
-      <bpmn:outgoing>Flow_1j3y53s</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${suppliersCollection}">
-        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${qualifySupplier}</bpmn:completionCondition>
-      </bpmn:multiInstanceLoopCharacteristics>
-      <bpmn:sequenceFlow id="Flow_1hgmghg" sourceRef="Activity_1ua0xtc" targetRef="Event_1lb5y7z" />
-      <bpmn:sequenceFlow id="Flow_1tmbqn8" sourceRef="Activity_104b8ra" targetRef="Activity_1ua0xtc" />
-      <bpmn:sequenceFlow id="Flow_0ci8syr" sourceRef="Event_1jqy03l" targetRef="Activity_104b8ra" />
-      <bpmn:endEvent id="Event_1lb5y7z">
-        <bpmn:incoming>Flow_1hgmghg</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:userTask id="Activity_104b8ra" name="User Selects one for investigation" camunda:formRef="qualifySupplier" camunda:formRefBinding="latest">
-        <bpmn:extensionElements>
-          <zeebe:formDefinition formId="Form_1gyu3nw" />
-        </bpmn:extensionElements>
-        <bpmn:incoming>Flow_0ci8syr</bpmn:incoming>
-        <bpmn:outgoing>Flow_1tmbqn8</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:startEvent id="Event_1jqy03l">
-        <bpmn:outgoing>Flow_0ci8syr</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:manualTask id="Activity_1ua0xtc" name="Carry out Risk Assessment">
-        <bpmn:incoming>Flow_1tmbqn8</bpmn:incoming>
-        <bpmn:outgoing>Flow_1hgmghg</bpmn:outgoing>
-      </bpmn:manualTask>
-    </bpmn:subProcess>
-    <bpmn:sequenceFlow id="Flow_0jgvcre" sourceRef="StartEvent_1" targetRef="Activity_08maxun" />
-    <bpmn:sequenceFlow id="Flow_1wag2sp" sourceRef="Activity_08maxun" targetRef="DefineEntryQualifiers" />
-    <bpmn:sequenceFlow id="Flow_0mvdyn7" sourceRef="DefineEntryQualifiers" targetRef="Gateway_0larksp" />
+    <bpmn:endEvent id="Event_0cldrg0" name="Selected a new Supplier">
+      <bpmn:incoming>Flow_1tmxvdv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_0toyz43" name="close before you leave">
+      <bpmn:incoming>Flow_0ltr1qe</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tmxvdv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:receiveTask id="receive_starting_requirements" name="Receive Starting Requirements" messageRef="Message_3qqo5pg">
+      <bpmn:incoming>Flow_1wag2sp</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mvdyn7</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:sendTask id="send_starting_requirements" name="Send Starting Requirements" camunda:type="external" camunda:topic="submit_form">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0jgvcre</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wag2sp</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:manualTask id="Activity_0kmw64z" name="Onboard the Supplier">
+      <bpmn:incoming>Flow_1j3y53s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ltr1qe</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:sequenceFlow id="Flow_0jgvcre" sourceRef="StartEvent_1" targetRef="send_starting_requirements" />
+    <bpmn:sequenceFlow id="Flow_0mvdyn7" sourceRef="receive_starting_requirements" targetRef="Gateway_0larksp" />
     <bpmn:sequenceFlow id="Flow_1aupq98" name="(trusted = true)" sourceRef="Gateway_0larksp" targetRef="search_trusted">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${trusted}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1tnabtg" name="(trusted = false)" sourceRef="Gateway_0larksp" targetRef="Gateway_11xaupz">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${not trusted}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1i6k1se" sourceRef="Gateway_11xaupz" targetRef="Activity_0k498nr">
+    <bpmn:sequenceFlow id="Flow_1i6k1se" name="rampGeneral" sourceRef="Gateway_11xaupz" targetRef="query_ramp_catalogue">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{rampGeneral}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1n6q469" sourceRef="Gateway_11xaupz" targetRef="Activity_04u836q">
+    <bpmn:sequenceFlow id="Flow_1n6q469" name="openCall" sourceRef="Gateway_11xaupz" targetRef="Activity_04u836q">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{openCall}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1t3ouyz" sourceRef="Activity_0k498nr" targetRef="Gateway_154uvr5" />
+    <bpmn:sequenceFlow id="Flow_1t3ouyz" sourceRef="query_ramp_catalogue" targetRef="Gateway_154uvr5" />
     <bpmn:sequenceFlow id="Flow_0blk4ld" sourceRef="Activity_04u836q" targetRef="Gateway_154uvr5" />
     <bpmn:sequenceFlow id="Flow_08o4iw9" sourceRef="Gateway_154uvr5" targetRef="FilterRankGeneric" />
-    <bpmn:sequenceFlow id="Flow_1j3y53s" sourceRef="UserPicksSupplier" targetRef="Activity_0kmw64z" />
-    <bpmn:sequenceFlow id="Flow_0ltr1qe" sourceRef="Activity_0kmw64z" targetRef="Activity_0toyz43" />
     <bpmn:sequenceFlow id="Flow_0alqjfy" sourceRef="search_trusted" targetRef="FilterTrusted" />
     <bpmn:sequenceFlow id="Flow_166m0bj" sourceRef="FilterTrusted" targetRef="Activity_0i4jpi0" />
     <bpmn:sequenceFlow id="Flow_05czjuj" sourceRef="Activity_0i4jpi0" targetRef="Event_1wqq80e" />
+    <bpmn:sequenceFlow id="Flow_030fzki" sourceRef="FilterRankGeneric" targetRef="risk_assessment_requirements" />
+    <bpmn:sequenceFlow id="Flow_1tmxvdv" sourceRef="Activity_0toyz43" targetRef="Event_0cldrg0" />
+    <bpmn:sequenceFlow id="Flow_0ltr1qe" sourceRef="Activity_0kmw64z" targetRef="Activity_0toyz43" />
+    <bpmn:sequenceFlow id="Flow_1wag2sp" sourceRef="send_starting_requirements" targetRef="receive_starting_requirements" />
+    <bpmn:userTask id="Activity_04u836q" name="Create Call for new Suppliers">
+      <bpmn:documentation>create an Open Call page and send notification to the entire RAMP community?</bpmn:documentation>
+      <bpmn:incoming>Flow_1n6q469</bpmn:incoming>
+      <bpmn:outgoing>Flow_0blk4ld</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:subProcess id="UserPicksSupplier" name="User picks supplier">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1img52m</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j3y53s</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${suppliersCollection}" camunda:elementVariable="supplier">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${qualifySupplier == true}</bpmn:completionCondition>
+      </bpmn:multiInstanceLoopCharacteristics>
+      <bpmn:callActivity id="Activity_1ua0xtc" name="Carry out Risk Assessment" calledElement="RiskAssessmentPhases">
+        <bpmn:extensionElements>
+          <camunda:in local="true" variables="all" />
+          <camunda:inputOutput>
+            <camunda:inputParameter name="supplier">${supplier}</camunda:inputParameter>
+            <camunda:inputParameter name="visitNeeded">${visitNeeded}</camunda:inputParameter>
+            <camunda:inputParameter name="selfAssessmentNeeded">${selfAssessmentNeeded}</camunda:inputParameter>
+            <camunda:inputParameter name="evidenceNeeded">${evidenceNeeded}</camunda:inputParameter>
+            <camunda:outputParameter name="qualifySupplier">${qualifySupplier}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:in businessKey="#{execution.processBusinessKey}" />
+          <camunda:out local="true" variables="all" />
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_0ci8syr</bpmn:incoming>
+        <bpmn:outgoing>Flow_1hgmghg</bpmn:outgoing>
+      </bpmn:callActivity>
+      <bpmn:boundaryEvent id="Event_1hosvyc" attachedToRef="Activity_1ua0xtc">
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_10t3x8t" errorRef="Error_16zv45h" />
+      </bpmn:boundaryEvent>
+      <bpmn:startEvent id="Event_1jqy03l">
+        <bpmn:outgoing>Flow_0ci8syr</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_0ci8syr" sourceRef="Event_1jqy03l" targetRef="Activity_1ua0xtc" />
+      <bpmn:endEvent id="Event_1lb5y7z">
+        <bpmn:incoming>Flow_1hgmghg</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1hgmghg" sourceRef="Activity_1ua0xtc" targetRef="Event_1lb5y7z" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1j3y53s" sourceRef="UserPicksSupplier" targetRef="Activity_0kmw64z" />
+    <bpmn:sequenceFlow id="Flow_0t00ksd" sourceRef="risk_assessment_requirements" targetRef="receive_risk_assessment_requirements" />
     <bpmn:serviceTask id="FilterRankGeneric" name="Filter &#38; Rank results" camunda:type="external" camunda:topic="filter_generic_suppliers">
       <bpmn:documentation>- based on entry criteria (see previous form)
 - select top-5 candidates</bpmn:documentation>
@@ -163,36 +157,32 @@ make it executable and deploy it for testing
       <bpmn:incoming>Flow_08o4iw9</bpmn:incoming>
       <bpmn:outgoing>Flow_030fzki</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_0cldrg0" name="Selected a new Supplier">
-      <bpmn:incoming>Flow_1tmxvdv</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1tmxvdv" sourceRef="Activity_0toyz43" targetRef="Event_0cldrg0" />
-    <bpmn:userTask id="Activity_0toyz43" name="close before you leave">
-      <bpmn:incoming>Flow_0ltr1qe</bpmn:incoming>
-      <bpmn:outgoing>Flow_1tmxvdv</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_030fzki" sourceRef="FilterRankGeneric" targetRef="UserPicksSupplier" />
+    <bpmn:sequenceFlow id="Flow_1img52m" sourceRef="receive_risk_assessment_requirements" targetRef="UserPicksSupplier" />
+    <bpmn:sendTask id="risk_assessment_requirements" name="Describe risk assessment requirements" camunda:type="external" camunda:topic="submit_form">
+      <bpmn:incoming>Flow_030fzki</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t00ksd</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="receive_risk_assessment_requirements" name="Get risk assesment requiremtns" messageRef="Message_0lh733c">
+      <bpmn:incoming>Flow_0t00ksd</bpmn:incoming>
+      <bpmn:outgoing>Flow_1img52m</bpmn:outgoing>
+    </bpmn:receiveTask>
   </bpmn:process>
   <bpmn:error id="Error_1ymm87p" name="SuppliersListExhausted" errorCode="SuppliersListExhausted" />
   <bpmn:error id="Error_0psfqym" name="emptySourcingStrategy" errorCode="emptySourcingStrategy" />
+  <bpmn:error id="Error_16zv45h" name="unresponsive_supplier" errorCode="unresponsive_supplier" />
+  <bpmn:message id="Message_3qqo5pg" name="send_starting_requirements" />
+  <bpmn:message id="Message_0lh733c" name="risk_assessment_requirements" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SupplierSelection">
       <bpmndi:BPMNShape id="Participant_0uvgh9p_di" bpmnElement="VendorOnboardingEngine" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="2400" height="500" />
+        <dc:Bounds x="160" y="80" width="2250" height="500" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="219" y="229" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="195" y="272" width="89" height="27" />
+          <dc:Bounds x="196" y="272" width="88" height="27" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1z0287a_di" bpmnElement="DefineEntryQualifiers">
-        <dc:Bounds x="500" y="207" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0660fkn_di" bpmnElement="Activity_08maxun">
-        <dc:Bounds x="320" y="207" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0larksp_di" bpmnElement="Gateway_0larksp" isMarkerVisible="true">
         <dc:Bounds x="645" y="222" width="50" height="50" />
@@ -203,18 +193,12 @@ make it executable and deploy it for testing
       <bpmndi:BPMNShape id="Gateway_0c5ia0f_di" bpmnElement="Gateway_11xaupz">
         <dc:Bounds x="745" y="222" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1dg05i9_di" bpmnElement="Activity_0k498nr">
+      <bpmndi:BPMNShape id="Activity_1dg05i9_di" bpmnElement="query_ramp_catalogue">
         <dc:Bounds x="850" y="147" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_12ssf9c_di" bpmnElement="Activity_04u836q">
-        <dc:Bounds x="950" y="290" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_097ummz_di" bpmnElement="Gateway_154uvr5">
         <dc:Bounds x="1065" y="222" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1pyh69m_di" bpmnElement="Activity_0kmw64z">
-        <dc:Bounds x="1960" y="207" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0x7c5le_di" bpmnElement="search_trusted">
         <dc:Bounds x="1040" y="420" width="100" height="80" />
@@ -234,40 +218,6 @@ make it executable and deploy it for testing
           <dc:Bounds x="1604" y="485" width="89" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1h54mbd_di" bpmnElement="UserPicksSupplier" isExpanded="true">
-        <dc:Bounds x="1390" y="147" width="540" height="200" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0pli77c" bpmnElement="Event_1lb5y7z">
-        <dc:Bounds x="1862" y="229" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1g2llqt_di" bpmnElement="Activity_104b8ra">
-        <dc:Bounds x="1590" y="207" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1jqy03l_di" bpmnElement="Event_1jqy03l">
-        <dc:Bounds x="1412" y="229" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_184wfmw_di" bpmnElement="Activity_1ua0xtc">
-        <dc:Bounds x="1720" y="204" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1hgmghg_di" bpmnElement="Flow_1hgmghg">
-        <di:waypoint x="1820" y="244" />
-        <di:waypoint x="1841" y="244" />
-        <di:waypoint x="1841" y="247" />
-        <di:waypoint x="1862" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1tmbqn8_di" bpmnElement="Flow_1tmbqn8">
-        <di:waypoint x="1690" y="247" />
-        <di:waypoint x="1720" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ci8syr_di" bpmnElement="Flow_0ci8syr">
-        <di:waypoint x="1448" y="247" />
-        <di:waypoint x="1590" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Activity_1pa1zv2_di" bpmnElement="FilterRankGeneric">
-        <dc:Bounds x="1220" y="207" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0cldrg0_di" bpmnElement="Event_0cldrg0">
         <dc:Bounds x="2302" y="229" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -277,13 +227,59 @@ make it executable and deploy it for testing
       <bpmndi:BPMNShape id="Activity_1cesnt6_di" bpmnElement="Activity_0toyz43">
         <dc:Bounds x="2130" y="207" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1pa1zv2_di" bpmnElement="FilterRankGeneric">
+        <dc:Bounds x="1140" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1valg2n" bpmnElement="risk_assessment_requirements">
+        <dc:Bounds x="1300" y="207" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ccddpn" bpmnElement="receive_risk_assessment_requirements">
+        <dc:Bounds x="1470" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h54mbd_di" bpmnElement="UserPicksSupplier" isExpanded="true">
+        <dc:Bounds x="1622" y="160" width="328" height="170" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0pli77c" bpmnElement="Event_1lb5y7z">
+        <dc:Bounds x="1892" y="229" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jjwvrg_di" bpmnElement="Activity_1ua0xtc">
+        <dc:Bounds x="1730" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1jqy03l_di" bpmnElement="Event_1jqy03l">
+        <dc:Bounds x="1642" y="229" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hosvyc_di" bpmnElement="Event_1hosvyc">
+        <dc:Bounds x="1792" y="269" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1hgmghg_di" bpmnElement="Flow_1hgmghg">
+        <di:waypoint x="1830" y="247" />
+        <di:waypoint x="1892" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ci8syr_di" bpmnElement="Flow_0ci8syr">
+        <di:waypoint x="1678" y="247" />
+        <di:waypoint x="1730" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_08wk2k6_di" bpmnElement="receive_starting_requirements">
+        <dc:Bounds x="500" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h0gc8m_di" bpmnElement="send_starting_requirements">
+        <dc:Bounds x="320" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1pyh69m_di" bpmnElement="Activity_0kmw64z">
+        <dc:Bounds x="1980" y="207" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bmb1vf_di" bpmnElement="Activity_04u836q">
+        <dc:Bounds x="930" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0jgvcre_di" bpmnElement="Flow_0jgvcre">
         <di:waypoint x="255" y="247" />
         <di:waypoint x="320" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1wag2sp_di" bpmnElement="Flow_1wag2sp">
-        <di:waypoint x="420" y="247" />
-        <di:waypoint x="500" y="247" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0mvdyn7_di" bpmnElement="Flow_0mvdyn7">
         <di:waypoint x="600" y="247" />
@@ -301,18 +297,24 @@ make it executable and deploy it for testing
         <di:waypoint x="695" y="247" />
         <di:waypoint x="745" y="247" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="691" y="263" width="78" height="14" />
+          <dc:Bounds x="681" y="263" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i6k1se_di" bpmnElement="Flow_1i6k1se" color:border-color="#212121">
         <di:waypoint x="770" y="222" />
         <di:waypoint x="770" y="187" />
         <di:waypoint x="850" y="187" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="777" y="163" width="65" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1n6q469_di" bpmnElement="Flow_1n6q469" color:border-color="#212121">
         <di:waypoint x="770" y="272" />
         <di:waypoint x="770" y="330" />
-        <di:waypoint x="950" y="330" />
+        <di:waypoint x="930" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="788" y="313" width="44" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1t3ouyz_di" bpmnElement="Flow_1t3ouyz">
         <di:waypoint x="950" y="187" />
@@ -320,21 +322,13 @@ make it executable and deploy it for testing
         <di:waypoint x="1090" y="222" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0blk4ld_di" bpmnElement="Flow_0blk4ld">
-        <di:waypoint x="1050" y="330" />
+        <di:waypoint x="1030" y="330" />
         <di:waypoint x="1090" y="330" />
         <di:waypoint x="1090" y="272" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_08o4iw9_di" bpmnElement="Flow_08o4iw9">
         <di:waypoint x="1115" y="247" />
-        <di:waypoint x="1220" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1j3y53s_di" bpmnElement="Flow_1j3y53s">
-        <di:waypoint x="1930" y="247" />
-        <di:waypoint x="1960" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0ltr1qe_di" bpmnElement="Flow_0ltr1qe">
-        <di:waypoint x="2060" y="247" />
-        <di:waypoint x="2130" y="247" />
+        <di:waypoint x="1140" y="247" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0alqjfy_di" bpmnElement="Flow_0alqjfy">
         <di:waypoint x="1140" y="460" />
@@ -348,52 +342,48 @@ make it executable and deploy it for testing
         <di:waypoint x="1500" y="460" />
         <di:waypoint x="1627" y="460" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_030fzki_di" bpmnElement="Flow_030fzki">
+        <di:waypoint x="1240" y="247" />
+        <di:waypoint x="1300" y="247" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1tmxvdv_di" bpmnElement="Flow_1tmxvdv">
         <di:waypoint x="2230" y="247" />
         <di:waypoint x="2302" y="247" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_030fzki_di" bpmnElement="Flow_030fzki">
-        <di:waypoint x="1320" y="247" />
-        <di:waypoint x="1390" y="247" />
+      <bpmndi:BPMNEdge id="Flow_0ltr1qe_di" bpmnElement="Flow_0ltr1qe">
+        <di:waypoint x="2080" y="247" />
+        <di:waypoint x="2130" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j3y53s_di" bpmnElement="Flow_1j3y53s">
+        <di:waypoint x="1950" y="247" />
+        <di:waypoint x="1980" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wag2sp_di" bpmnElement="Flow_1wag2sp">
+        <di:waypoint x="420" y="247" />
+        <di:waypoint x="500" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t00ksd_di" bpmnElement="Flow_0t00ksd">
+        <di:waypoint x="1400" y="247" />
+        <di:waypoint x="1470" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1img52m_di" bpmnElement="Flow_1img52m">
+        <di:waypoint x="1570" y="247" />
+        <di:waypoint x="1622" y="247" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_085hlaq_di" bpmnElement="Participant_1c87g8e" isHorizontal="true">
-        <dc:Bounds x="590" y="690" width="1160" height="60" />
+        <dc:Bounds x="800" y="720" width="1160" height="60" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_14jk9oc_di" bpmnElement="TextAnnotation_14jk9oc">
-        <dc:Bounds x="1340" y="800" width="579.995538165843" height="127.40252608456892" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_13isr5i_di" bpmnElement="TextAnnotation_13isr5i">
-        <dc:Bounds x="290" y="110" width="99.99274099883856" height="69.68641114982579" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_0nka48m_di" bpmnElement="TextAnnotation_0nka48m">
-        <dc:Bounds x="1900" y="60" width="99.99274099883856" height="126.59698025551684" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1ryk781_di" bpmnElement="Association_1ryk781">
-        <di:waypoint x="1239" y="750" />
-        <di:waypoint x="1355" y="800" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0j20fl4_di" bpmnElement="Association_0j20fl4">
-        <di:waypoint x="360" y="207" />
-        <di:waypoint x="353" y="180" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_07w036m_di" bpmnElement="Association_07w036m">
-        <di:waypoint x="1822" y="147" />
-        <di:waypoint x="1900" y="103" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0iehtly_di" bpmnElement="Flow_0iehtly">
-        <di:waypoint x="990" y="690" />
-        <di:waypoint x="990" y="370" />
+        <di:waypoint x="970" y="720" />
+        <di:waypoint x="970" y="370" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1ha8bdi_di" bpmnElement="Flow_1ha8bdi">
-        <di:waypoint x="880" y="690" />
+        <di:waypoint x="880" y="720" />
         <di:waypoint x="880" y="227" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0xmrjn1_di" bpmnElement="Flow_0xmrjn1">
-        <di:waypoint x="1090" y="690" />
+        <di:waypoint x="1090" y="720" />
         <di:waypoint x="1090" y="500" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

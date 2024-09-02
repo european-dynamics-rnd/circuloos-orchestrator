@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+
+  camunda:
+    image: camunda/camunda-bpm-platform:latest
+    container_name: camunda-bpm
+    command: ["./camunda.sh", "--rest", "--swaggerui","--webapps"]
+    ports:
+      - "8089:8080" # http://localhost:8080/camunda-welcome/index.html
+
+

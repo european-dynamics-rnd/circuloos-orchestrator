@@ -113,31 +113,6 @@
         "columns": null
       },
       "id": "Field_0i8umdc"
-    },
-    {
-      "label": "Table",
-      "type": "table",
-      "layout": {
-        "row": "Row_0tmelxo",
-        "columns": null
-      },
-      "rowCount": 10,
-      "columns": [
-        {
-          "label": "ID",
-          "key": "id"
-        },
-        {
-          "label": "Name",
-          "key": "name"
-        },
-        {
-          "label": "Date",
-          "key": "date"
-        }
-      ],
-      "id": "Field_16javs2",
-      "dataSource": "=Field_16javs2"
     }
   ],
   "type": "default",
